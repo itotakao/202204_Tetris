@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,17 +17,42 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject resultRoot;
 
+    [SerializeField]
+    private GameObject tetorimino;
+
+    [SerializeField]
+    private ScriptGraphAsset scriptGraph;
+
     private void Awake()
     {
         Current = this;
+
+        StartCoroutine(CoUpdate());
+
+        SwitchScene(SceneType.Title);
     }
+
+    private IEnumerator CoUpdate()
+    {
+        while (true)
+        {
+            yield return new WaitUntil(() => (currentSceneType == SceneType.Game));
+
+            var obj = Instantiate(tetorimino, new Vector3(0, 21, 0), Quaternion.identity);
+            obj.SetActive(true);
+            Variables.Object(obj).Set("IsDown", true);
+
+            yield return new WaitForSeconds(21);
+        }
+    }
+
 
     public void SwitchScene(SceneType sceneType)
     {
         currentSceneType = sceneType;
 
         titleRoot.SetActive(false);
-        gameObject.SetActive(false);
+        gameRoot.SetActive(false);
         resultRoot.SetActive(false);
 
         switch (sceneType)
@@ -37,7 +63,7 @@ public class GameManager : MonoBehaviour
                 titleRoot.SetActive(true);
                 break;
             case SceneType.Game:
-                gameObject.SetActive(true);
+                gameRoot.SetActive(true);
                 break;
             case SceneType.Result:
                 resultRoot.SetActive(true);
