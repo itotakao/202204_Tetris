@@ -65,8 +65,6 @@ public class GameLauncuer : MonoBehaviour
             var t = Instantiate(prefab, spawnPoint).GetComponent<Tetorimino>();
             updateDebugFieldData();
 
-
-
             yield return new WaitUntil(() => !t.IsDown);
 
             Debug.Log("aaa");

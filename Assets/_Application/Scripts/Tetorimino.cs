@@ -78,6 +78,8 @@ public class Tetorimino : MonoBehaviour
 
         var a = TetriminoData[0][0, 1];
 
+        var mino = new I_Tetorimino();
+
         while (true)
         {
             await Task.Delay(1000);
@@ -88,6 +90,7 @@ public class Tetorimino : MonoBehaviour
                 break;
             }
 
+            mino.rotationRight();
             MoveDown();
         }
 
@@ -98,7 +101,7 @@ public class Tetorimino : MonoBehaviour
     {
         var y = (int)transform.localPosition.x;
         var x = Math.Abs((int)transform.localPosition.y);
-        Debug.Log(x + "   " + y);
+        //Debug.Log(x + "   " + y);
 
         var data = GameLauncuer.FieldData[x + 1, 6];
         var isEnd = (data == 1);
